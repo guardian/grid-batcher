@@ -34,8 +34,7 @@
   "jspm": {
     "directories": {},
     "dependencies": {
-      "any-http-request": "npm:any-http-request@^0.1.1",
-      "form-data": "npm:form-data@^1.0.0-rc3",
+      "any-http-request": "npm:any-http-request@^0.1.4",
       "fs": "github:jspm/nodelibs-fs@^0.1.2",
       "js-yaml": "npm:js-yaml@^3.4.0",
       "path": "github:jspm/nodelibs-path@^0.1.0",
@@ -44,6 +43,11 @@
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.91",
       "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91"
+    },
+    "overrides": {
+      "npm:form-data@1.0.0-rc3": {
+        "browser": "lib/form_data"
+      }
     }
   }
 }

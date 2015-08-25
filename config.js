@@ -8,7 +8,7 @@ System.config({
   },
 
   map: {
-    "any-http-request": "npm:any-http-request@0.1.1",
+    "any-http-request": "npm:any-http-request@0.1.4",
     "form-data": "npm:form-data@1.0.0-rc3",
     "fs": "github:jspm/nodelibs-fs@0.1.2",
     "js-yaml": "npm:js-yaml@3.4.0",
@@ -88,7 +88,7 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:any-http-request@0.1.1": {
+    "npm:any-http-request@0.1.4": {
       "request": "npm:request@2.61.0"
     },
     "npm:argparse@1.0.2": {
