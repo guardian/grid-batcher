@@ -7,9 +7,7 @@ import * as commands from './commands';
 function run(query, processor) {
 
     function process(results) {
-        const processedItems = results.data.map(processor);
-
-        return Promise.all(processedItems).
+        return Promise.resolve(processor(results)).
             then(() => results.getLink('next').catch(() => undefined)).
             then(nextLink => {
                 if (nextLink) {
