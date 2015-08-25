@@ -30,12 +30,15 @@
   "bugs": {
     "url": "https://github.com/guardian/grid-batcher/issues"
   },
-  "homepage": "https://github.com/guardian/grid-batcher"
+  "homepage": "https://github.com/guardian/grid-batcher",
   "jspm": {
     "directories": {},
     "dependencies": {
       "any-http-request": "npm:any-http-request@^0.1.1",
       "form-data": "npm:form-data@^1.0.0-rc3",
+      "fs": "github:jspm/nodelibs-fs@^0.1.2",
+      "js-yaml": "npm:js-yaml@^3.4.0",
+      "path": "github:jspm/nodelibs-path@^0.1.0",
       "theseus": "npm:theseus@^0.5.0"
     },
     "devDependencies": {

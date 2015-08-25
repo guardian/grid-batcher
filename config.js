@@ -10,6 +10,9 @@ System.config({
   map: {
     "any-http-request": "npm:any-http-request@0.1.1",
     "form-data": "npm:form-data@1.0.0-rc3",
+    "fs": "github:jspm/nodelibs-fs@0.1.2",
+    "js-yaml": "npm:js-yaml@3.4.0",
+    "path": "github:jspm/nodelibs-path@0.1.0",
     "theseus": "npm:theseus@0.5.0",
     "traceur": "github:jmcriffey/bower-traceur@0.0.91",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
@@ -87,6 +90,15 @@ System.config({
     },
     "npm:any-http-request@0.1.1": {
       "request": "npm:request@2.61.0"
+    },
+    "npm:argparse@1.0.2": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "lodash": "npm:lodash@3.10.1",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "sprintf-js": "npm:sprintf-js@1.0.3",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:asn1.js@2.2.0": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -272,6 +284,10 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
+    "npm:esprima@2.2.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:forever-agent@0.6.1": {
       "http": "github:jspm/nodelibs-http@1.7.1",
       "https": "github:jspm/nodelibs-https@0.1.0",
@@ -359,9 +375,20 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "npm:js-yaml@3.4.0": {
+      "argparse": "npm:argparse@1.0.2",
+      "esprima": "npm:esprima@2.2.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
     "npm:jsonpointer@1.1.0": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "console": "github:jspm/nodelibs-console@0.1.0"
+    },
+    "npm:lodash@3.10.1": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:miller-rabin@2.0.1": {
       "bn.js": "npm:bn.js@2.2.0",

@@ -1,11 +1,13 @@
 import {Client} from 'theseus';
 import {Http} from 'any-http-request';
 
-export const configuration = {
-    api_key: '',
-    api_uri: '',
-    api_page_size: 10
-};
+import {loadConfig} from './configuration';
+
+import path from 'path';
+import fs   from 'fs';
+import yaml from 'js-yaml';
+
+const configuration = loadConfig('grid-batcher', 'config.yml');
 
 const client = new Client({
     promise: Promise,
