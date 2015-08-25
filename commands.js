@@ -4,7 +4,9 @@ export function print(image) {
 }
 
 export function reindex(image) {
-    return image.perform('reindex').catch(error => {
+    return image.perform('reindex').then(() => {
+        console.log(`Reindexed ${image.data.id}`);
+    }).catch(error => {
         console.error(`Failed to reindex ${image.data.id}: ${error.message}`);
     });
 }
