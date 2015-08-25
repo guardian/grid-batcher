@@ -1,0 +1,46 @@
+{
+  "name": "grid-batcher",
+  "version": "0.1.0",
+  "description": "Simple REPL to run batch operations against the Grid",
+  "main": "batcher.js",
+  "bin": {
+    "grid-batcher": "./batcher.js"
+  },
+  "dependencies": {
+    "jspm": "^0.16.1",
+    "systemjs": "^0.18.14"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/jspm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/guardian/grid-batcher.git"
+  },
+  "keywords": [
+    "grid",
+    "thegrid",
+    "api",
+    "repl",
+    "client"
+  ],
+  "author": "Sébastien Cevey <seb@cine7.net>",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/guardian/grid-batcher/issues"
+  },
+  "homepage": "https://github.com/guardian/grid-batcher"
+  "jspm": {
+    "directories": {},
+    "dependencies": {
+      "any-http-request": "npm:any-http-request@^0.1.1",
+      "form-data": "npm:form-data@^1.0.0-rc3",
+      "theseus": "npm:theseus@^0.5.0"
+    },
+    "devDependencies": {
+      "traceur": "github:jmcriffey/bower-traceur@0.0.91",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91"
+    }
+  }
+}
