@@ -12,10 +12,20 @@ if (process.argv.length < 4) {
 }
 
 var command = process.argv[2];
-var query = process.argv.slice(3);
+var query = process.argv[3];
+var data = parseData(process.argv[4]);
+
+function parseData(data) {
+    // FIXME: not particularly typesafe.
+    try {
+        return JSON.parse(data)
+    } catch(e) {
+        return undefined;
+    }
+}
 
 System.import('./core').then(function(core) {
-    core.execute(query, command).then(function() {
+    core.execute(query, command, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
         console.error(error.stack);
