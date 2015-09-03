@@ -19,10 +19,10 @@ const client = new Client({
     })
 });
 
-export function search(query) {
+export function search(query, params = {}) {
     const root = client.resource(configuration.api_uri);
-    return root.follow('search', {
+    return root.follow('search', Object.assign({}, {
         length: configuration.api_page_size,
         q: query
-    }).get();
+    }, params)).get();
 }

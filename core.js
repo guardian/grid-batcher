@@ -3,8 +3,9 @@ import {Http} from 'any-http-request';
 
 import {search} from './api';
 import * as commands from './commands';
+import * as mappings from './mappings';
 
-function run(query, processor, data) {
+export function run(processor, query, params, data) {
 
     function process(results) {
         return Promise.resolve(processor(results, data)).
@@ -17,16 +18,29 @@ function run(query, processor, data) {
                 // Else noop, terminate the recursive chain
             });
     }
-    
-    return search(query).then(process);
+
+    return search(query, params).then(process);
 }
 
 
-export function execute(query, commandName, data) {
+export function execute(commandName, query, searchParams, data) {
     const command = commands[commandName];
     if (! command) {
         return Promise.reject(new Error('Invalid command: ' + commandName));
     }
 
-    return run(query, commands[commandName], data);
+    return run(command, query, searchParams, data);
+}
+
+export function mapping(mappingName) {
+    const mapping = mappings[mappingName];
+    const query = mappings.queries.get(mappingName);
+    // only non-picdar images, that aren't free in the new cost model
+    const searchParams = { free: true, costModelDiff: true, missingIdentifier: 'picdarUrn' };
+
+    if (! mapping) {
+        return Promise.reject(new Error('Invalid mapping: ' + commandName));
+    }
+
+    return run(mapping, query, searchParams);
 }

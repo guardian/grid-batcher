@@ -13,19 +13,19 @@ if (process.argv.length < 4) {
 
 var command = process.argv[2];
 var query = process.argv[3];
-var data = parseData(process.argv[4]);
+var searchParams = sToO(process.argv[4]);
+var data = sToO(process.argv[5]);
 
-function parseData(data) {
-    // FIXME: not particularly typesafe.
-    try {
-        return JSON.parse(data)
-    } catch(e) {
-        return undefined;
+function sToO(s) {
+    // Wow!
+    eval('const o = '+ s);
+    if (typeof o === 'object') {
+        return o;
     }
 }
 
 System.import('./core').then(function(core) {
-    core.execute(query, command, data).then(function() {
+    core.command(command, query, searchParams, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
         console.error(error.stack);

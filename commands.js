@@ -1,5 +1,6 @@
 function mapAll(mapperFunc) {
     return (results, data) => {
+        console.log(`Total results: ${results.total}`);
         const mapped = results.data.map(image => mapperFunc(image, data));
         return Promise.all(mapped);
     };
