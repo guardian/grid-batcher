@@ -25,7 +25,7 @@ function sToO(s) {
 }
 
 System.import('./core').then(function(core) {
-    core.command(command, query, searchParams, data).then(function() {
+    core.execute(command, query, searchParams, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
         console.error(error.stack);
