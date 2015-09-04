@@ -5,7 +5,7 @@ import {search} from './api';
 import * as commands from './commands';
 import * as mappings from './mappings';
 
-export function run(processor, query, params, data) {
+function run(processor, query, params, data) {
 
     function process(results) {
         return Promise.resolve(processor(results, data)).
