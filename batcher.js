@@ -24,8 +24,6 @@ function argToObj(s) {
 }
 
 System.import('./core').then(function(core) {
-    console.log(searchParams, data);
-    return;
     core.execute(command, query, searchParams, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
