@@ -3,11 +3,10 @@ import {Http} from 'any-http-request';
 
 import {search} from './api';
 import * as commands from './commands';
-import * as presets from './command-presets';
 
-function run(processor, query, params, data) {
+function run({ processor, query, params }) {
     function process(results) {
-        return Promise.resolve(processor(results, data)).
+        return Promise.resolve(processor(results)).
             then(() => results.getLink('next').catch(() => undefined)).
             then(nextLink => {
                 if (nextLink) {
@@ -21,16 +20,12 @@ function run(processor, query, params, data) {
 }
 
 
-export function execute(name, query, searchParams, data) {
+export function execute(name, query, params, data) {
     const command = commands[name];
-
-    const preset = presets[name] || {};
-    const params = searchParams  || preset.params;
-    const q      = query         || preset.query;
 
     if (! command) {
         return Promise.reject(new Error('Invalid command: ' + commandName));
     }
 
-    return run(command, q, params, data);
+    return run(command(query, params, data));
 }
