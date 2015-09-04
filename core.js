@@ -25,8 +25,8 @@ export function execute(name, query, searchParams, data) {
     const command = commands[name];
 
     const preset = presets[name] || {};
-    const q       = query || preset.query;
-    const params  = searchParams || preset.params;
+    const params = searchParams  || preset.params;
+    const q      = query         || preset.query;
 
     if (! command) {
         return Promise.reject(new Error('Invalid command: ' + commandName));
