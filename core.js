@@ -34,7 +34,9 @@ export function execute(commandName, query, searchParams, data) {
 
 export function mapping(mappingName) {
     const mapping = mappings[mappingName];
-    const query = mappings.queries.get(mappingName);
+    const query = mapping.query;
+    const processor = mapping.processor;
+
     // only non-picdar images, that aren't free in the new cost model
     const searchParams = { free: true, costModelDiff: true, missingIdentifier: 'picdarUrn' };
 
@@ -42,5 +44,5 @@ export function mapping(mappingName) {
         return Promise.reject(new Error('Invalid mapping: ' + commandName));
     }
 
-    return run(mapping, query, searchParams);
+    return run(processor, query, searchParams);
 }

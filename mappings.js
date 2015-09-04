@@ -1,21 +1,23 @@
-export const queries = new Map();
-
 const Agency = (supplier, suppliersCollection) => cleanUndefineds({
     category: 'agency',
     supplier,
     suppliersCollection
 });
 
-queries.set('gettyImagesUsageRights', 'credit:"Getty Images"');
-export const gettyImagesUsageRights = mapAllUsageRightsWithMetadataOverrides(image => {
+export const gettyImagesUsageRights = mapping('credit:"Getty Images"',
+    mapAllUsageRightsWithMetadataOverrides(image => {
 
-    const usageRights = Agency("Getty Images", cleanSource(image.data.metadata.source));
+        const usageRights = Agency("Getty Images", cleanSource(image.data.metadata.source));
 
-    console.log(`Setting usage rights on ${image.data.id} with:`);
-    console.log(usageRights);
-    //return image.data.userMetadata.data.usageRights.post(usagerights);
+        console.log(`Setting usage rights on ${image.data.id} with:`);
+        console.log(usageRights);
+        //return image.data.userMetadata.data.usageRights.post(usagerights);
+    })
+);
 
-});
+function mapping(query, processor) {
+    return { query, processor }
+}
 
 function mapAllUsageRightsWithMetadataOverrides(mapperFunc) {
     return results => {
