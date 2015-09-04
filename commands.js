@@ -54,47 +54,43 @@ export const patchMetadata = dataCommand(data => mapAll(image => {
     });
 }));
 
-export const gettyImagesUsageRights = presetCommand(
-    'credit:"Getty Images"',
-    notPicdarDiffParams,
-    mapWithUserMetadata(image => {
-        const source = cleanSource(image.data.metadata.source);
-        const usageRights = Agency("Getty Images", source);
+// TODO: We could probably batch these up
+export const aapCreditToUsageRights =
+    creditAgencyMapCommand("AAP", "AAP");
 
-        return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-            console.log(`Set usage rights on ${image.data.id} with: Agency("Getty Images", ${source})`);
-            console.log(usageRights);
-        });
-    })
-);
+export const actionImagesCreditToUsageRights =
+    creditAgencyMapCommand('Action Images', 'Action Images');
 
-export const fairfaxUsageRights = presetCommand(
-    'credit:"Fairfax Media via Getty Images"',
-    notPicdarDiffParams,
-    mapWithUserMetadata(image => {
-        const usageRights = Agency("Getty Images", "Fairfax");
+export const alamyImagesToCreditUsageRights =
+    creditAgencyMapCommand('Alamy', 'Alamy');
 
-        return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-            console.log(`Set usage rights on ${image.data.id} with: Agency("Getty Images", "Fairfax")`);
-        });
-    })
-);
+export const barcroftCreditToUsageRights =
+    creditAgencyMapCommand("Barcroft Media", "Barcroft Media");
 
-export const reutersUsageRights = presetCommand(
-    'credit:"REUTERS"',
-    notPicdarDiffParams,
-    mapWithUserMetadata(image => {
-        const usageRights = Agency("Reuters");
+export const apCreditToUsageRights =
+    creditAgencyMapCommand("AP", "AP");
 
-        return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-            console.log(`Set usage rights on ${image.data.id} with: Agency("Reuters")`);
-        });
-    })
-);
+export const corbisCreditToUsageRights =
+    creditAgencyMapCommand("Corbis", "Corbis");
 
-// TODO: set metadata or rights
-// TODO: select/map data
-// TODO: delete (scary?)
+export const epaCreditToUsageRights =
+    creditAgencyMapCommand("EPA", "EPA");
+
+export const fairfaxUsageRights =
+    creditAgencyMapCommand('Fairfax Media via Getty Images', 'Getty Images', 'Fairfax');
+
+export const gettyImagesUsageRights =
+    creditAgencyMapCommand('Getty Images', 'Getty Images');
+
+export const paCreditToUsageRights =
+    creditAgencyMapCommand("PA", "PA");
+
+export const reutersUsageRights =
+    creditAgencyMapCommand('REUTERS', 'Reuters');
+
+export const rexCreditToUsageRights =
+    creditAgencyMapCommand("Rex Features", "Rex Features");
+
 
 
 function mapAll(mapperFunc) {
@@ -122,3 +118,28 @@ function mapWithUserMetadata(mapperFunc) {
         return Promise.all(mapped);
     };
 }
+
+function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/) {
+    return presetCommand(
+        `credit:"${credit}"`,
+        notPicdarDiffParams,
+        mapWithUserMetadata(image => {
+            const source = suppliersCollection || cleanSource(image.data.metadata.source);
+            // I'd prefer not to use ternaries but intellij borks.
+            const usageRights = (supplier === "Getty Images") ?
+                Agency("Getty Images", source) :
+                Agency(supplier);
+
+            console.log(image.data.id);
+            console.log(usageRights);
+            //return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
+            //    console.log(`Set usage rights on ${image.data.id} with: Agency("${supplier}")`);
+            //});
+        })
+    );
+}
+
+// TODO: set metadata or rights
+// TODO: select/map data
+// TODO: delete (scary?)
+
