@@ -14,6 +14,8 @@ export function cleanUndefinedKeys(o) {
     }, {});
 }
 
+// Theseus returns an object with the uri as a property when the `data` object should be missing.
+// See: https://github.com/argo-rest/theseus/issues/21
 export function cleanTheseusBug(o) {
     const keys = Object.keys(o);
     if (keys.length === 1  && keys[0] === 'uri') { return; }
