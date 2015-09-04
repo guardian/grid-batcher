@@ -36,6 +36,24 @@ export const gettyImagesUsageRights =
         return image.data.userMetadata.data.usageRights.put({ data: usageRights });
     });
 
+export const fairfaxUsageRights = mapAllUsageRightsWithMetadataOverrides(image => {
+    const usageRights = Agency("Getty Images", "Fairfax");
+
+    console.log(`Setting usage rights on ${image.data.id} with:`);
+    console.log(usageRights);
+
+    return image.data.userMetadata.data.usageRights.put({ data: usageRights });
+});
+
+export const reutersUsageRights = mapAllUsageRightsWithMetadataOverrides(image => {
+    const usageRights = Agency("Reuters");
+
+    console.log(`Setting usage rights on ${image.data.id} with:`);
+    console.log(usageRights);
+
+    return image.data.userMetadata.data.usageRights.put({ data: usageRights });
+});
+
 // TODO: set metadata or rights
 // TODO: select/map data
 // TODO: delete (scary?)
