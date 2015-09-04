@@ -21,6 +21,11 @@ const client = new Client({
 
 export function search(query, params = {}) {
     const root = client.resource(configuration.api_uri);
+
+    console.log('Searching for: ');
+    console.log(query);
+    console.log(params);
+
     return root.follow('search', Object.assign({}, {
         length: configuration.api_page_size,
         q: query

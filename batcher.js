@@ -6,7 +6,7 @@ var System = require('systemjs');
 require('./config');
 
 // Help
-if (process.argv.length < 4) {
+if (process.argv.length < 3) {
     console.log('usage: batcher <action> <query>');
     process.exit(1);
 }
@@ -30,4 +30,4 @@ System.import('./core').then(function(core) {
         console.error(error.stack);
         process.exit(1);
     });
-}).catch(function(e) { throw e; });
+}).catch(function(e) { console.log(e); });
