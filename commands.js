@@ -33,7 +33,7 @@ export const gettyImagesUsageRights =
 
         console.log(`Setting usage rights on ${image.data.id} with:`);
         console.log(usageRights);
-        //return image.data.userMetadata.data.usageRights.post(usagerights);
+        return image.data.userMetadata.data.usageRights.post(usagerights);
     });
 
 // TODO: set metadata or rights
