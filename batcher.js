@@ -30,4 +30,4 @@ System.import('./core').then(function(core) {
         console.error(error.stack);
         process.exit(1);
     });
-}).catch(function(e) { console.log(e); });
+}).catch(function(e) { setTimeout(function(){ throw e; }, 0); });
