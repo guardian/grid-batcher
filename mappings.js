@@ -11,7 +11,7 @@ export const gettyImagesUsageRights = mapping('credit:"Getty Images"',
 
         console.log(`Setting usage rights on ${image.data.id} with:`);
         console.log(usageRights);
-        //return image.data.userMetadata.data.usageRights.post(usagerights);
+        return image.data.userMetadata.data.usageRights.post(usagerights);
     })
 );
 
