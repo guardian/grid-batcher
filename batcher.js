@@ -13,18 +13,19 @@ if (process.argv.length < 4) {
 
 var command = process.argv[2];
 var query = process.argv[3];
-var searchParams = sToO(process.argv[4]);
-var data = sToO(process.argv[5]);
+var searchParams = argToObj(process.argv[4]);
+var data = argToObj(process.argv[5]);
 
-function sToO(s) {
-    // Wow!
-    eval('const o = '+ s);
-    if (typeof o === 'object') {
-        return o;
+function argToObj(s) {
+    if (s) {
+        try { return JSON.parse(s); }
+        catch(e) { throw "Invalid JSON argument"; }
     }
 }
 
 System.import('./core').then(function(core) {
+    console.log(searchParams, data);
+    return;
     core.execute(command, query, searchParams, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
