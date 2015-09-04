@@ -6,29 +6,28 @@ var System = require('systemjs');
 require('./config');
 
 // Help
-if (process.argv.length < 4) {
+if (process.argv.length < 3) {
     console.log('usage: batcher <action> <query>');
     process.exit(1);
 }
 
 var command = process.argv[2];
 var query = process.argv[3];
-var data = parseData(process.argv[4]);
+var searchParams = argToObj(process.argv[4]);
+var data = argToObj(process.argv[5]);
 
-function parseData(data) {
-    // FIXME: not particularly typesafe.
-    try {
-        return JSON.parse(data)
-    } catch(e) {
-        return undefined;
+function argToObj(s) {
+    if (s) {
+        try { return JSON.parse(s); }
+        catch(e) { throw "Invalid JSON argument"; }
     }
 }
 
 System.import('./core').then(function(core) {
-    core.execute(query, command, data).then(function() {
+    core.execute(command, query, searchParams, data).then(function() {
         process.exit(0);
     }).catch(function(error) {
         console.error(error.stack);
         process.exit(1);
     });
-});
+}).catch(function(e) { setTimeout(function(){ throw e; }, 0); });
