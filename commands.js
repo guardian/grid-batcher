@@ -130,11 +130,9 @@ function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/)
                 Agency("Getty Images", source) :
                 Agency(supplier);
 
-            console.log(image.data.id);
-            console.log(usageRights);
-            //return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-            //    console.log(`Set usage rights on ${image.data.id} with: Agency("${supplier}")`);
-            //});
+            return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
+                console.log(`Set usage rights on ${image.data.id} with: Agency("${supplier}")`);
+            });
         })
     );
 }
