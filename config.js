@@ -13,7 +13,7 @@ System.config({
     "fs": "github:jspm/nodelibs-fs@0.1.2",
     "js-yaml": "npm:js-yaml@3.4.0",
     "path": "github:jspm/nodelibs-path@0.1.0",
-    "theseus": "npm:theseus@0.5.0",
+    "theseus": "npm:theseus@0.5.1",
     "traceur": "github:jmcriffey/bower-traceur@0.0.91",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -550,7 +550,7 @@ System.config({
     "npm:supports-color@2.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:theseus@0.5.0": {
+    "npm:theseus@0.5.1": {
       "uri-templates": "npm:uri-templates@0.1.7"
     },
     "npm:timers-browserify@1.4.1": {
