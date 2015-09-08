@@ -70,6 +70,9 @@ export const barcroftCreditToUsageRights =
 export const apCreditToUsageRights =
     creditAgencyMapCommand("AP", "AP");
 
+export const assPressCreditToUsageRights =
+    creditAgencyMapCommand("Associated Press", "AP");
+
 export const corbisCreditToUsageRights =
     creditAgencyMapCommand("Corbis", "Corbis");
 
@@ -79,18 +82,30 @@ export const epaCreditToUsageRights =
 export const fairfaxUsageRights =
     creditAgencyMapCommand('Fairfax Media via Getty Images', 'Getty Images', 'Fairfax');
 
-export const gettyImagesUsageRights =
-    creditAgencyMapCommand('Getty Images', 'Getty Images');
-
 export const paCreditToUsageRights =
     creditAgencyMapCommand("PA", "PA");
 
-export const reutersUsageRights =
+export const reutersCreditUsageRights =
+    creditAgencyMapCommand('REUTERS', 'Reuters');
+
+export const reutersUpperCreditUsageRights =
     creditAgencyMapCommand('REUTERS', 'Reuters');
 
 export const rexCreditToUsageRights =
     creditAgencyMapCommand("Rex Features", "Rex Features");
 
+// Getty Images
+export const gettyImagesUsageRights =
+    creditAgencyMapCommand('Getty Images', 'Getty Images');
+
+export const afpMagicGettyImagesCreditToUsageRights =
+    creditAgencyMapCommand('AFP/Getty Images', 'Getty Images', 'AFP');
+
+export const filmMagicGettyImagesCreditToUsageRights =
+    creditAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
+
+export const wireimageGettyImagesCreditToUsageRights =
+    creditAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
 
 
 function mapAll(mapperFunc) {
