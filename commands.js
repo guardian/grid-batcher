@@ -82,10 +82,10 @@ export const creditToUsageRightsEpa =
 export const creditToUsageRightsFairfax =
     creditAgencyMapCommand('Fairfax Media via Getty Images', 'Getty Images', 'Fairfax');
 
-export const creditToUsageRightspa =
+export const creditToUsageRightsPa =
     creditAgencyMapCommand('PA', 'PA');
 
-export const creditToUsageRightspaArchive =
+export const creditToUsageRightsPaArchive =
     creditAgencyMapCommand('PA Archive/Press Association Images', 'PA');
 
 export const creditToUsageRightsReuters =
@@ -98,7 +98,7 @@ export const creditToUsageRightsRex =
     creditAgencyMapCommand('Rex Features', 'Rex Features');
 
 // Getty Images
-export const creditToUsageRightsImages =
+export const creditToUsageRightsGetty =
     creditAgencyMapCommand('Getty Images', 'Getty Images');
 
 export const creditToUsageRightsAfp =
@@ -113,7 +113,7 @@ export const creditToUsageRightsBfiGetty =
 export const creditToUsageRightsFilmMagic =
     creditAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
 
-export const creditToUsageRightsgettyWireImage =
+export const creditToUsageRightsWireImage =
     creditAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
 
 
@@ -125,10 +125,16 @@ export const copyrightToUsageRightsRonaldGrantArchive =
     copyrightAgencyMapCommand('THE RONALD GRANT ARCHIVE', 'Ronald Grant Archive');
 
 export const copyrightToUsageRightsRonaldGrant =
-    copyrightAgencyMapCommand('RONALD GRANT', 'Reuters');
+    copyrightAgencyMapCommand('RONALD GRANT', 'Ronald Grant Archive');
 
 export const copyrightToUsageRightsPa =
     copyrightAgencyMapCommand('PA Archive/Press Association Images', 'PA');
+
+export const copyrightToUsageRightsAp =
+    copyrightAgencyMapCommand('AP', 'AP');
+
+export const copyrightToUsageRightsGetty =
+    copyrightAgencyMapCommand('Getty Images', 'Getty Images');
 
 export const copyrightToUsageRightsGettyAfp =
     copyrightAgencyMapCommand('AFP', 'Getty Images', 'AFP');
@@ -159,7 +165,7 @@ function mapWithUserMetadata(mapperFunc) {
         console.log(`Total results: ${results.total}`);
         const mapped = results.data.map(image => {
             const usageRightsOverrides = cleanTheseusBug(image.data.userMetadata.data.usageRights.data);
-            const metadataOverrides = cleanTheseusBug(image.data.userMetadata.data.metadata.data)
+            const metadataOverrides = cleanTheseusBug(image.data.userMetadata.data.metadata.data);
             // we are only looking to run this function on images that have metadata overrides
             // and no usageRights already set
             if (metadataOverrides && !usageRightsOverrides) {
@@ -194,8 +200,6 @@ function copyrightAgencyMapCommand(copyright, supplier, suppliersCollection/*Opt
 
 function setUsageRights(supplier, suppliersCollection/*Option*/) {
     return mapWithUserMetadata(image => {
-        console.log(image.data.metadata)
-
         const source = suppliersCollection || cleanSource(image.data.metadata.source);
         // I'd prefer not to use ternaries but intellij borks.
         const usageRights = (supplier === 'Getty Images') ?
@@ -203,7 +207,7 @@ function setUsageRights(supplier, suppliersCollection/*Option*/) {
             Agency(supplier);
 
         return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-            console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}')`);
+            console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}', '${suppliersCollection}')`);
         });
     });
 }
