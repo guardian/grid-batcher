@@ -1,6 +1,5 @@
 import {cleanSource, cleanTheseusBug} from './cleaners';
 import {Agency} from './usage-rights';
-import {notPicdarDiffParams} from './params';
 
 function command(query, params, processor) {
     return {query, params, processor};
@@ -55,57 +54,102 @@ export const patchMetadata = dataCommand(data => mapAll(image => {
 }));
 
 // TODO: We could probably batch these up
-export const aapCreditToUsageRights =
-    creditAgencyMapCommand("AAP", "AAP");
+// Credit => Agency
+export const creditToUsageRightsAap =
+    creditAgencyMapCommand('AAP', 'AAP');
 
-export const actionImagesCreditToUsageRights =
+export const creditToUsageRightsActionImages =
     creditAgencyMapCommand('Action Images', 'Action Images');
 
-export const alamyImagesToCreditUsageRights =
+export const creditToUsageRightsAlamyImages =
     creditAgencyMapCommand('Alamy', 'Alamy');
 
-export const barcroftCreditToUsageRights =
-    creditAgencyMapCommand("Barcroft Media", "Barcroft Media");
+export const creditToUsageRightsBarcroft =
+    creditAgencyMapCommand('Barcroft Media', 'Barcroft Media');
 
-export const apCreditToUsageRights =
-    creditAgencyMapCommand("AP", "AP");
+export const creditToUsageRightsAp =
+    creditAgencyMapCommand('AP', 'AP');
 
-export const assPressCreditToUsageRights =
-    creditAgencyMapCommand("Associated Press", "AP");
+export const creditToUsageRightsAssPress =
+    creditAgencyMapCommand('Associated Press', 'AP');
 
-export const corbisCreditToUsageRights =
-    creditAgencyMapCommand("Corbis", "Corbis");
+export const creditToUsageRightsCorbis =
+    creditAgencyMapCommand('Corbis', 'Corbis');
 
-export const epaCreditToUsageRights =
-    creditAgencyMapCommand("EPA", "EPA");
+export const creditToUsageRightsEpa =
+    creditAgencyMapCommand('EPA', 'EPA');
 
-export const fairfaxUsageRights =
+export const creditToUsageRightsFairfax =
     creditAgencyMapCommand('Fairfax Media via Getty Images', 'Getty Images', 'Fairfax');
 
-export const paCreditToUsageRights =
-    creditAgencyMapCommand("PA", "PA");
+export const creditToUsageRightsPa =
+    creditAgencyMapCommand('PA', 'PA');
 
-export const reutersCreditUsageRights =
+export const creditToUsageRightsPaArchive =
+    creditAgencyMapCommand('PA Archive/Press Association Images', 'PA');
+
+export const creditToUsageRightsReuters =
+    creditAgencyMapCommand('Reuters', 'Reuters');
+
+export const creditToUsageRightsReutersUpper =
     creditAgencyMapCommand('REUTERS', 'Reuters');
 
-export const reutersUpperCreditUsageRights =
-    creditAgencyMapCommand('REUTERS', 'Reuters');
-
-export const rexCreditToUsageRights =
-    creditAgencyMapCommand("Rex Features", "Rex Features");
+export const creditToUsageRightsRex =
+    creditAgencyMapCommand('Rex Features', 'Rex Features');
 
 // Getty Images
-export const gettyImagesUsageRights =
+export const creditToUsageRightsGetty =
     creditAgencyMapCommand('Getty Images', 'Getty Images');
 
-export const afpMagicGettyImagesCreditToUsageRights =
+export const creditToUsageRightsAfp =
+    creditAgencyMapCommand('AFP', 'Getty Images', 'AFP');
+
+export const creditToUsageRightsAfpGetty =
     creditAgencyMapCommand('AFP/Getty Images', 'Getty Images', 'AFP');
 
-export const filmMagicGettyImagesCreditToUsageRights =
+export const creditToUsageRightsBfiGetty =
+    creditAgencyMapCommand('BFI', 'Getty Images', 'BFI');
+
+export const creditToUsageRightsFilmMagic =
     creditAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
 
-export const wireimageGettyImagesCreditToUsageRights =
+export const creditToUsageRightsWireImage =
     creditAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
+
+
+// Copyright => Agency
+export const copyrightToUsageRightsReuters =
+    copyrightAgencyMapCommand('REUTERS', 'Reuters');
+
+export const copyrightToUsageRightsRonaldGrantArchive =
+    copyrightAgencyMapCommand('THE RONALD GRANT ARCHIVE', 'Ronald Grant Archive');
+
+export const copyrightToUsageRightsRonaldGrant =
+    copyrightAgencyMapCommand('RONALD GRANT', 'Ronald Grant Archive');
+
+export const copyrightToUsageRightsPa =
+    copyrightAgencyMapCommand('PA Archive/Press Association Images', 'PA');
+
+export const copyrightToUsageRightsAp =
+    copyrightAgencyMapCommand('AP', 'AP');
+
+export const copyrightToUsageRightsGetty =
+    copyrightAgencyMapCommand('Getty Images', 'Getty Images');
+
+export const copyrightToUsageRightsGettyAfp =
+    copyrightAgencyMapCommand('AFP', 'Getty Images', 'AFP');
+
+export const copyrightToUsageRightsGettyFilmMagic =
+    copyrightAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
+
+export const copyrightToUsageRightsGettyBfi =
+    copyrightAgencyMapCommand('BFI', 'Getty Images', 'BFI');
+
+export const copyrightToUsageRightsGettyWireImage =
+    copyrightAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
+
+export const copyrightToUsageRightsGettyHulton =
+    copyrightAgencyMapCommand('Hulton Getty', 'Getty Images', 'Hulton');
 
 
 function mapAll(mapperFunc) {
@@ -121,7 +165,7 @@ function mapWithUserMetadata(mapperFunc) {
         console.log(`Total results: ${results.total}`);
         const mapped = results.data.map(image => {
             const usageRightsOverrides = cleanTheseusBug(image.data.userMetadata.data.usageRights.data);
-            const metadataOverrides = cleanTheseusBug(image.data.userMetadata.data.metadata.data)
+            const metadataOverrides = cleanTheseusBug(image.data.userMetadata.data.metadata.data);
             // we are only looking to run this function on images that have metadata overrides
             // and no usageRights already set
             if (metadataOverrides && !usageRightsOverrides) {
@@ -134,22 +178,38 @@ function mapWithUserMetadata(mapperFunc) {
     };
 }
 
+// This is used to set the usage rights on images that have had their credit set in the Grid
+// making them free to use - only run on non-picdar images.
 function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/) {
     return presetCommand(
         `credit:"${credit}"`,
-        notPicdarDiffParams,
-        mapWithUserMetadata(image => {
-            const source = suppliersCollection || cleanSource(image.data.metadata.source);
-            // I'd prefer not to use ternaries but intellij borks.
-            const usageRights = (supplier === "Getty Images") ?
-                Agency("Getty Images", source) :
-                Agency(supplier);
-
-            return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-                console.log(`Set usage rights on ${image.data.id} with: Agency("${supplier}")`);
-            });
-        })
+        {free: true, costModelDiff: true, missingIdentifier: 'picdarUrn'},
+        setUsageRights(supplier, suppliersCollection)
     );
+}
+
+// This is used to set the usage rights on images that have had their copyright set in the Picdar to
+// making them free to use. Only run on Picdar images.
+function copyrightAgencyMapCommand(copyright, supplier, suppliersCollection/*Option*/) {
+    return presetCommand(
+        `copyright:"${copyright}"`,
+        {free: true, costModelDiff: true, hasIdentifier: 'picdarUrn'},
+        setUsageRights(supplier, suppliersCollection)
+    );
+}
+
+function setUsageRights(supplier, suppliersCollection/*Option*/) {
+    return mapWithUserMetadata(image => {
+        const source = suppliersCollection || cleanSource(image.data.metadata.source);
+        // I'd prefer not to use ternaries but intellij borks.
+        const usageRights = (supplier === 'Getty Images') ?
+            Agency('Getty Images', source) :
+            Agency(supplier);
+
+        return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
+            console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}', '${suppliersCollection}')`);
+        });
+    });
 }
 
 // TODO: set metadata or rights
