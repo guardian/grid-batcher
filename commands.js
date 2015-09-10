@@ -1,6 +1,5 @@
 import {cleanSource, cleanTheseusBug} from './cleaners';
 import {Agency} from './usage-rights';
-import {costModelDiff} from './params';
 
 function command(query, params, processor) {
     return {query, params, processor};
@@ -55,6 +54,7 @@ export const patchMetadata = dataCommand(data => mapAll(image => {
 }));
 
 // TODO: We could probably batch these up
+// Credit => Agency
 export const aapCreditToUsageRights =
     creditAgencyMapCommand('AAP', 'AAP');
 
@@ -94,12 +94,6 @@ export const reutersCreditUsageRights =
 export const reutersUpperCreditUsageRights =
     creditAgencyMapCommand('REUTERS', 'Reuters');
 
-export const ronaldGrantArchiveUpperCreditUsageRights =
-    creditAgencyMapCommand('The Ronald Grant Archive', 'Ronald Grant Archive');
-
-export const ronaldGrantArchiveUpperCreditUsageRights =
-    creditAgencyMapCommand('THE RONALD GRANT ARCHIVE', 'Ronald Grant Archive');
-
 export const rexCreditToUsageRights =
     creditAgencyMapCommand('Rex Features', 'Rex Features');
 
@@ -119,11 +113,36 @@ export const gettyBfiGettyCreditToUsageRights =
 export const gettyFilmMagicCreditToUsageRights =
     creditAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
 
-export const gettyHultonMagicCreditToUsageRights =
-    creditAgencyMapCommand('Hulton Getty', 'Getty Images', 'Hulton');
-
 export const gettyWireimageCreditToUsageRights =
     creditAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
+
+// Copyright => Agency
+export const copyrightToUsageRightsReuters =
+    copyrightAgencyMapCommand('REUTERS', 'Reuters');
+
+export const copyrightToUsageRightsRonaldGrantArchive =
+    copyrightAgencyMapCommand('THE RONALD GRANT ARCHIVE', 'Ronald Grant Archive');
+
+export const copyrightToUsageRightsRonaldGrant =
+    copyrightAgencyMapCommand('RONALD GRANT', 'Reuters');
+
+export const copyrightToUsageRightsPa =
+    copyrightAgencyMapCommand('PA Archive/Press Association Images', 'PA');
+
+export const copyrightToUsageRightsGettyAfp =
+    copyrightAgencyMapCommand('AFP', 'Getty Images', 'AFP');
+
+export const copyrightToUsageRightsGettyFilmMagic =
+    copyrightAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
+
+export const copyrightToUsageRightsGettyBfi =
+    copyrightAgencyMapCommand('BFI', 'Getty Images', 'BFI');
+
+export const copyrightToUsageRightsGettyWireImage =
+    copyrightAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
+
+export const copyrightToUsageRightsGettyHulton =
+    copyrightAgencyMapCommand('Hulton Getty', 'Getty Images', 'Hulton');
 
 
 function mapAll(mapperFunc) {
@@ -152,22 +171,38 @@ function mapWithUserMetadata(mapperFunc) {
     };
 }
 
+// This is used to set the usage rights on images that have had their credit set in the Grid
+// making them free to use
 function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/) {
     return presetCommand(
         `credit:"${credit}"`,
         {free: true, costModelDiff: true},
-        mapWithUserMetadata(image => {
-            const source = suppliersCollection || cleanSource(image.data.metadata.source);
-            // I'd prefer not to use ternaries but intellij borks.
-            const usageRights = (supplier === 'Getty Images') ?
-                Agency('Getty Images', source) :
-                Agency(supplier);
-
-            return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
-                console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}')`);
-            });
-        })
+        mapWithUserMetadata(supplier, suppliersCollection)
     );
+}
+
+// This is used to set the usage rights on images that have had their copyright set in the Picdar to
+// making them free to use
+function copyrightAgencyMapCommand(copyright, supplier, suppliersCollection/*Option*/) {
+    return presetCommand(
+        `copyright:"${copyright}"`,
+        {free: true, costModelDiff: true},
+        mapWithUserMetadata(supplier, suppliersCollection)
+    );
+}
+
+function mapWithUserMetadata(supplier, suppliersCollection/*Option*/) {
+    return (image) => {
+        const source = suppliersCollection || cleanSource(image.data.metadata.source);
+        // I'd prefer not to use ternaries but intellij borks.
+        const usageRights = (supplier === 'Getty Images') ?
+            Agency('Getty Images', source) :
+            Agency(supplier);
+
+        return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
+            console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}')`);
+        });
+    }
 }
 
 // TODO: set metadata or rights
