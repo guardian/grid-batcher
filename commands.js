@@ -55,66 +55,67 @@ export const patchMetadata = dataCommand(data => mapAll(image => {
 
 // TODO: We could probably batch these up
 // Credit => Agency
-export const aapCreditToUsageRights =
+export const creditToUsageRightsAap =
     creditAgencyMapCommand('AAP', 'AAP');
 
-export const actionImagesCreditToUsageRights =
+export const creditToUsageRightsActionImages =
     creditAgencyMapCommand('Action Images', 'Action Images');
 
-export const alamyImagesToCreditUsageRights =
+export const creditToUsageRightsAlamyImages =
     creditAgencyMapCommand('Alamy', 'Alamy');
 
-export const barcroftCreditToUsageRights =
+export const creditToUsageRightsBarcroft =
     creditAgencyMapCommand('Barcroft Media', 'Barcroft Media');
 
-export const apCreditToUsageRights =
+export const creditToUsageRightsAp =
     creditAgencyMapCommand('AP', 'AP');
 
-export const assPressCreditToUsageRights =
+export const creditToUsageRightsAssPress =
     creditAgencyMapCommand('Associated Press', 'AP');
 
-export const corbisCreditToUsageRights =
+export const creditToUsageRightsCorbis =
     creditAgencyMapCommand('Corbis', 'Corbis');
 
-export const epaCreditToUsageRights =
+export const creditToUsageRightsEpa =
     creditAgencyMapCommand('EPA', 'EPA');
 
-export const fairfaxUsageRights =
+export const creditToUsageRightsFairfax =
     creditAgencyMapCommand('Fairfax Media via Getty Images', 'Getty Images', 'Fairfax');
 
-export const paCreditToUsageRights =
+export const creditToUsageRightspa =
     creditAgencyMapCommand('PA', 'PA');
 
-export const paArchiveCreditToUsageRights =
+export const creditToUsageRightspaArchive =
     creditAgencyMapCommand('PA Archive/Press Association Images', 'PA');
 
-export const reutersCreditUsageRights =
+export const creditToUsageRightsReuters =
     creditAgencyMapCommand('Reuters', 'Reuters');
 
-export const reutersUpperCreditUsageRights =
+export const creditToUsageRightsReutersUpper =
     creditAgencyMapCommand('REUTERS', 'Reuters');
 
-export const rexCreditToUsageRights =
+export const creditToUsageRightsRex =
     creditAgencyMapCommand('Rex Features', 'Rex Features');
 
 // Getty Images
-export const gettyImagesUsageRights =
+export const creditToUsageRightsImages =
     creditAgencyMapCommand('Getty Images', 'Getty Images');
 
-export const gettyAfpCreditToUsageRights =
+export const creditToUsageRightsAfp =
     creditAgencyMapCommand('AFP', 'Getty Images', 'AFP');
 
-export const gettyAfpGettyCreditToUsageRights =
+export const creditToUsageRightsAfpGetty =
     creditAgencyMapCommand('AFP/Getty Images', 'Getty Images', 'AFP');
 
-export const gettyBfiGettyCreditToUsageRights =
+export const creditToUsageRightsBfiGetty =
     creditAgencyMapCommand('BFI', 'Getty Images', 'BFI');
 
-export const gettyFilmMagicCreditToUsageRights =
+export const creditToUsageRightsFilmMagic =
     creditAgencyMapCommand('FilmMagic', 'Getty Images', 'FilmMagic');
 
-export const gettyWireimageCreditToUsageRights =
+export const creditToUsageRightsgettyWireImage =
     creditAgencyMapCommand('WireImage', 'Getty Images', 'WireImage');
+
 
 // Copyright => Agency
 export const copyrightToUsageRightsReuters =
@@ -172,21 +173,21 @@ function mapWithUserMetadata(mapperFunc) {
 }
 
 // This is used to set the usage rights on images that have had their credit set in the Grid
-// making them free to use
+// making them free to use - only run on non-picdar images.
 function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/) {
     return presetCommand(
         `credit:"${credit}"`,
-        {free: true, costModelDiff: true},
+        {free: true, costModelDiff: true, missingIdentifier: 'picdarUrn'},
         mapWithUserMetadata(supplier, suppliersCollection)
     );
 }
 
 // This is used to set the usage rights on images that have had their copyright set in the Picdar to
-// making them free to use
+// making them free to use. Only run on Picdar images.
 function copyrightAgencyMapCommand(copyright, supplier, suppliersCollection/*Option*/) {
     return presetCommand(
         `copyright:"${copyright}"`,
-        {free: true, costModelDiff: true},
+        {free: true, costModelDiff: true, hasIdentifier: 'picdarUrn'},
         mapWithUserMetadata(supplier, suppliersCollection)
     );
 }
