@@ -178,7 +178,7 @@ function creditAgencyMapCommand(credit, supplier, suppliersCollection/*Option*/)
     return presetCommand(
         `credit:"${credit}"`,
         {free: true, costModelDiff: true, missingIdentifier: 'picdarUrn'},
-        mapWithUserMetadata(supplier, suppliersCollection)
+        setUsageRights(supplier, suppliersCollection)
     );
 }
 
@@ -188,12 +188,14 @@ function copyrightAgencyMapCommand(copyright, supplier, suppliersCollection/*Opt
     return presetCommand(
         `copyright:"${copyright}"`,
         {free: true, costModelDiff: true, hasIdentifier: 'picdarUrn'},
-        mapWithUserMetadata(supplier, suppliersCollection)
+        setUsageRights(supplier, suppliersCollection)
     );
 }
 
-function mapWithUserMetadata(supplier, suppliersCollection/*Option*/) {
-    return (image) => {
+function setUsageRights(supplier, suppliersCollection/*Option*/) {
+    return mapWithUserMetadata(image => {
+        console.log(image.data.metadata)
+
         const source = suppliersCollection || cleanSource(image.data.metadata.source);
         // I'd prefer not to use ternaries but intellij borks.
         const usageRights = (supplier === 'Getty Images') ?
@@ -203,7 +205,7 @@ function mapWithUserMetadata(supplier, suppliersCollection/*Option*/) {
         return image.data.userMetadata.data.usageRights.put({ data: usageRights }).then(() => {
             console.log(`Set usage rights on ${image.data.id} with: Agency('${supplier}')`);
         });
-    }
+    });
 }
 
 // TODO: set metadata or rights
