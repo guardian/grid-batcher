@@ -11,11 +11,6 @@ function userCommand(com) {
     return (query, params, data) => command(query, params, com);
 }
 
-// these commands ignore the user input completely
-function presetCommand(query, params, com) {
-    return (_, __, ___) => command(query, params, com);
-}
-
 // use user query & params and apply data
 const noQueryError = new Error('Do NOT add data to everything. Please supply a query.');
 const noDataError  = new Error('No data. Please give us some data.');
@@ -26,6 +21,14 @@ function dataCommand(com) {
 
         return command(query, params, com(data));
     }
+}
+
+function mapAll(mapperFunc) {
+    return results => {
+        console.log(`Total results: ${results.total}`);
+        const mapped = results.data.map(mapperFunc);
+        return Promise.all(mapped);
+    };
 }
 
 // The commandments
@@ -65,15 +68,6 @@ export const editUsageRights = dataCommand(data => mapAll(image => {
     });
 }));
 
-function mapAll(mapperFunc) {
-    return results => {
-        console.log(`Total results: ${results.total}`);
-        const mapped = results.data.map(mapperFunc);
-        return Promise.all(mapped);
-    };
-}
-
-// TODO: set metadata or rights
 // TODO: select/map data
 // TODO: delete (scary?)
 
