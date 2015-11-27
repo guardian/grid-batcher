@@ -7,7 +7,18 @@ require('./config');
 
 // Help
 if (process.argv.length < 3) {
-    console.log('usage: batcher <action> <query>');
+    const exampleQ = 'by:"Felix Clay"';
+    const exampleParams = JSON.stringify({ free: false });
+    const exampleData = JSON.stringify({
+        category: 'comissioned-photographer',
+        photographer: 'Felix Clay',
+        publication: 'The Guardian'
+    });
+
+    console.log('usage:');
+    console.log('batcher reindex|print <query>')
+    console.log('batcher patchMetadata|editUsageRights <query> <jsonParameters> <jsonData>')
+    console.log("e.g: ./batcher.js editUsageRights '" + [exampleQ, exampleParams, exampleData].join("' '") + "'");
     process.exit(1);
 }
 
