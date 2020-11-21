@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "jspm": "^0.16.1",
-    "systemjs": "^0.18.14"
+    "systemjs": "^0.21.6"
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/jspm install",
